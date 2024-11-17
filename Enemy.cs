@@ -10,32 +10,31 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Initialization if needed
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Any enemy movement or logic
+        
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D whatIHit)
     {
-        // Check if the object collided with is the player
-        if (other.tag("Player"))
+        if (whatIHit.tag == "Player")
         {
-            other.GetComponent<Player>().LoseALife();
+            //I hit the Player!
+            whatIHit.GetComponent<Player>().LoseALife();
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         } 
-        // Check if the object collided with is a bullet (tagged as "Weapon")
-        else if (whatDidIHit.tag("Weapon"))
+        else if (whatIHit.tag == "Weapon")
         {
-            // Assuming you have a GameManager to handle score
+            //I am shot!
             GameObject.Find("GameManager").GetComponent<GameManager>().EarnScore(5);
-            Destroy(whatDidIHit.gameObject); // Destroy the bullet 
             Instantiate(explosion, transform.position, Quaternion.identity);
-            Destroy(this.gameObject); // Destroy the enemy
+            Destroy(whatIHit.gameObject);
+            Destroy(this.gameObject);
         }
     }
 }
