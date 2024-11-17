@@ -12,15 +12,15 @@ public class Player : MonoBehaviour
     private float verticalScreenSize = 7.5f;
     private float speed;
     private int shooting;
+    private int lives;
     private bool hasShield;
+
+    private GameManager gameManager;
 
     public GameObject bullet;
     public GameObject explosion;
     public GameObject thruster;
     public GameObject shield;
-    private int lives;
-
-    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +53,15 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
         }
+
+         if (transform.position.y <= -4f)
+         {
+            transform.position = new Vector3(transform.position.x, -4, 0);
+         }
+          if (transform.position.y >= 5f)
+          {
+            transform.position = new Vector3(transform.position.x, 5, 0);
+          }
     }
 
     void Shooting()
@@ -102,6 +111,7 @@ public class Player : MonoBehaviour
         speed = 6f;
         thruster.gameObject.SetActive(false);
         gameManager.UpdatePowerupText("");
+        gameManager.PlayPowerDown();
     }
 
     IEnumerator ShootingPowerDown()
@@ -109,13 +119,16 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(3f);
         shooting = 1;
         gameManager.UpdatePowerupText("");
+        gameManager.PlayPowerDown();
     }
 
     IEnumerator ShieldPowerDown()
     {
         yield return new WaitForSeconds(6f); // Shield lasts for 6 seconds
         shield.gameObject.SetActive(false); // Deactivate the shield
+        hasShield = false; // Ensure the shield status is reset
         gameManager.UpdatePowerupText(""); // Reset the powerup text
+        gameManager.PlayPowerDown();
     }
 
     private void OnTriggerEnter2D(Collider2D whatIHit)
