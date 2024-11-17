@@ -14,10 +14,7 @@ public class Coin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y > 9f || transform.position.y <= -9f)
-        {
-            Destroy(this.gameObject);
-        }
+    
     }
 
     private void OnTriggerEnter2D(Collider2D whatDidIHit)
